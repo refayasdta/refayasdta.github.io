@@ -13,6 +13,29 @@
     body.loading {
         padding-top: 0; /* Don't offset during loader */
     }
+
+    /* Contain all sections to screen width */
+    section, nav {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    /* Scale down desktop nav links font if somehow visible */
+    .nav-links {
+        font-size: 1.5rem;
+    }
+
+    /* Make contact section stack and wrap cleanly */
+    #contact {
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    /* Projects image full width */
+    .projects-container {
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
     .exp-container{
         flex-direction: column;
         align-items: center;

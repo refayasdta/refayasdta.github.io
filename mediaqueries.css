@@ -1,0 +1,181 @@
+@media screen and (max-width:1200px){
+    #desktop-nav{
+        display: none;
+    }
+    #hamburger-nav{
+        display: flex;
+    }
+
+    /* Push page content below the fixed hamburger nav */
+    body {
+        padding-top: 14vh;
+    }
+    body.loading {
+        padding-top: 0; /* Don't offset during loader */
+    }
+    .exp-container{
+        flex-direction: column;
+        align-items: center;
+    }
+    .exp-card {
+        width: 100%;
+        max-width: 450px;
+    }
+
+    /* Override the desktop layout for active cards on mobile */
+    .exp-card.active {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) !important;
+        width: 90vw;
+        max-height: 85vh;
+        margin: 0 !important;
+        flex-direction: column;
+        justify-content: flex-start;
+        overflow-y: auto;
+        padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+        box-sizing: border-box;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        z-index: 100;
+    }
+
+    .exp-card.active .exp-img {
+        width: 100%;
+        height: 250px;
+        margin-right: 0;
+        margin-bottom: 1.5rem;
+    }
+
+    .exp-card.active .exp-details {
+        width: 100%;
+        text-align: center;
+    }
+
+    .exp-card.active .close-btn {
+        top: 0.5rem;
+        right: 0.5rem;
+        font-size: 2rem;
+        background-color: white;
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    /* ── Mobile Experience Section Overhaul ── */
+
+    /* Give the canvas a natural auto height instead of fixed 720px */
+    .exp-interactive-canvas {
+        height: auto;
+        max-width: 100%;
+        padding-bottom: 1rem;
+    }
+
+    /* Stack the numbers vertically along with the cards */
+    .exp-number {
+        position: static;
+        display: block;
+        font-size: 4rem;
+        line-height: 1;
+        right: auto;
+        margin-bottom: 0.25rem;
+        padding-left: 1rem;
+    }
+
+    /* Reset absolute positions — cards stack naturally in DOM order */
+    .exp-card-fly {
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        background: white;
+        padding: 0;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        display: flex;
+        flex-direction: column;
+        top: auto !important;
+        left: auto !important;
+    }
+
+    /* Numbers sit above their card */
+    .exp-number[data-index="1"] { order: 0; }
+    .exp-card-fly[data-index="1"] { order: 1; }
+    .exp-number[data-index="2"] { order: 2; }
+    .exp-card-fly[data-index="2"] { order: 3; }
+    .exp-number[data-index="3"] { order: 4; }
+    .exp-card-fly[data-index="3"] { order: 5; }
+
+    /* Make the canvas a flex column so order works */
+    .exp-interactive-canvas {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Thumbnail image — full width, fixed height */
+    .exp-img-fly {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    /* Hide the arrow cue on mobile — not needed */
+    .click-cue {
+        display: none;
+    }
+
+    /* Details always visible on mobile — accordion style */
+    .exp-details-fly {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        max-height: 0;
+        overflow: hidden;
+        padding: 0 1rem;
+        transition: max-height 0.45s ease, padding 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* Expanded state — show details */
+    .exp-card-fly.active .exp-details-fly {
+        max-height: 500px;
+        padding: 1rem;
+        transition-delay: 0s;
+    }
+
+    /* Active card styling on mobile — no flying, just expand in place */
+    .exp-card-fly.active {
+        box-shadow: 0 8px 24px rgba(0,0,0,0.18) !important;
+    }
+
+    .exp-card-fly.active .exp-img-fly {
+        height: 220px;
+        margin-bottom: 0;
+    }
+
+    /* Show close button inside the card on mobile */
+    .exp-card-fly .close-btn {
+        display: none;
+        top: 12px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+        font-size: 1.2rem;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .exp-card-fly.active .close-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Numbers don't need to fade on mobile */
+    .exp-interactive-canvas.has-active .exp-number {
+        opacity: 1;
+        transform: none;
+    }
+}

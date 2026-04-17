@@ -1,0 +1,624 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 400;
+    background-color: #f9c511;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+p {
+    color: rgb(85, 85, 85);
+}
+
+a, .btn {
+    transition: all 300ms ease;
+}
+
+/* ── Navigation ────────────────────────────────────────────────────────────── */
+
+nav, .nav-links {
+    display: flex;
+}
+
+nav {
+    justify-content: right;
+    align-items: center;
+    height: 14vh;
+    padding-right: 2rem;
+}
+
+.nav-links {
+    gap: 2rem;
+    list-style: none;
+    font-size: 2.5rem;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+    text-decoration-color: white;
+}
+
+a:hover {
+    color: grey;
+    text-decoration: underline;
+    text-underline-offset: 0.55rem;
+}
+
+/* ── Hamburger Menu ────────────────────────────────────────────────────────── */
+
+#hamburger-nav {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 14vh;
+    min-height: 60px;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+    background-color: #f9c511;
+    z-index: 1000;
+}
+
+.hamburger-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 24px;
+    width: 30px;
+    cursor: pointer;
+}
+
+.hamburger-icon span {
+    width: 100%;
+    height: 2px;
+    background-color: black;
+    transition: all 0.3s ease-in-out;
+}
+
+.menu-links {
+    position: absolute;
+    top: 100%;
+    right: 0%;
+    background-color: #f9c511;
+    width: fit-content;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    z-index: 999;
+    min-width: 160px;
+}
+
+.menu-links a {
+    display: block;
+    padding: 10px;
+    text-align: center;
+    font-size: 1.5rem;
+    color: black;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.menu-links li {
+    list-style: none;
+}
+
+.menu-links.open {
+    max-height: 300px;
+}
+
+.hamburger-icon.open span:first-child {
+    transform: rotate(45deg) translate(10px, 5px);
+}
+.hamburger-icon.open span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger-icon.open span:last-child {
+    transform: rotate(-45deg) translate(10px, -5px);
+}
+
+/* ── Profile / Text Canvas Section ────────────────────────────────────────── */
+
+#profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 7rem 0;
+    overflow: hidden;
+}
+
+#text-slice-canvas {
+    display: block;
+    width: 100%;
+    /* height is set dynamically by textpressure.js */
+}
+
+/* Sections */
+
+.title{
+    font-size: clamp(2rem, 10vw, 3.9cm);
+    display: flex;
+    justify-content: center;
+}
+
+.section__pic-container{
+    display: flex;
+    justify-content: center;
+}
+
+.about-pic {
+    display: block;
+    margin: 0 auto;       /* Keeps it centered */
+    margin-top: 0px;
+    
+    /* Responsive Sizing Rules */
+    width: 80%;           /* The image will take up 80% of the screen/container width */
+    max-width: 400px;     /* It will stop growing once it hits 400px wide on desktop */
+    height: auto;         /* Keeps the proportions (aspect ratio) perfect so it doesn't stretch */
+}
+
+#about {
+    margin-top: 200px; /* Change this number to make the gap larger or smaller */
+}
+
+/* ── About Details & Text ────────────────────────────────────────────────── */
+
+.about-details-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 3.5rem; /* Adds space between the picture and the text */
+    padding: 0 2rem;  /* Prevents text from touching the screen edges on mobile */
+}
+
+.about-text {
+    text-align: center;
+    color: black;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    line-height: 1.6;  /* Improves readability */
+    max-width: 800px;  /* Stops the text from stretching too wide on desktop */
+}
+
+#experience {
+    display: flex;           /* Turns the whole section into a flex container */
+    flex-direction: column;  /* Stacks the Title and the Cards vertically */
+    align-items: center;     /* Forces absolutely everything inside to the dead center */
+    margin-top: 150px; 
+    padding: 0 2rem;
+    width: 100%;             /* Ensures the section spans the full width of the screen */
+    box-sizing: border-box;  /* Prevents padding from breaking the width */
+}
+
+.exp-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;               
+    width: 100%;             
+    max-width: 1100px;       
+    margin-top: 3rem;  
+    position: relative;      /* NEW: Crucial for allowing the active card to cover the others perfectly */
+}
+
+.exp-card {
+    background-color: white;
+    flex: 1;
+    border-radius: 0.1px;
+    padding: 0.25rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: relative;      /* Required for z-index layering */
+    z-index: 1;              /* Default layer */
+    display: flex;
+    flex-direction: column;  /* Stack image and text vertically by default */
+    align-items: center;
+    /* This transition makes the pop-out and shrink smooth */
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); 
+}
+
+.exp-card.active {
+    position: absolute;      /* Detaches the card from the row so it can float over the others */
+    top: 0;
+    left: 0;
+    width: 100%;             /* Stretches it across the whole container */
+    height: 100%;            /* Stretches it to the bottom */
+    margin: 0;               
+    z-index: 20;             
+    flex-direction: row;     
+    align-items: center;     /* Centers content vertically */
+    box-sizing: border-box;
+    cursor: default;         /* Changes cursor back to normal since it's already open */
+}   
+
+.exp-card:hover {
+    transform: translateY(-5px);
+}
+
+/* ── The Magic 'Active' State ── */
+
+.exp-card.active {
+    flex-direction: row;     /* Puts Image on Left, Text on Right */
+    align-items: center;
+    margin: 0 -5rem;         /* NEGATIVE MARGIN: This forces the card to stretch out and overlap its neighbors */
+    z-index: 10;             /* Pops the active card to the front layer */
+    transform: scale(1.05);  /* Slight 3D expansion */
+    box-shadow: 0 20px 30px rgba(0,0,0,0.2); /* Deep shadow to separate it from the background */
+}
+
+.exp-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    /* This makes the image smoothly shrink and slide to the left */
+    transition: width 0.5s ease-in-out, height 0.5s ease-in-out, margin 0.5s ease-in-out;
+}
+
+/* Image behavior when card is clicked */
+.exp-card.active .exp-img {
+    width: 40%;              
+    height: 90%;             
+    object-fit: contain;     
+    margin-right: 2rem;
+    background-color: #f4f4f4; 
+}
+
+.exp-details {
+    color: black;
+    width: 100%;
+    text-align: center;      /* Centers the title nicely under the image */
+    /* Notice we removed max-height and opacity here so the container stays visible! */
+    transition: width 0.5s ease-in-out;
+}
+
+.exp-details h3 {
+    margin-top: 1rem;        /* Adds a little gap between the image and the title */
+    margin-bottom: 0;
+    font-size: 1.5rem;
+    transition: margin 0.5s ease;
+    font-weight: 400;
+}
+
+.exp-details p {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin: 0;
+    /* When closing, fade the text out quickly before shrinking the box */
+    transition: opacity 0.2s ease, max-height 0.5s ease;
+}
+
+/* Text behavior when card is clicked */
+.exp-card.active .exp-details {
+    width: 60%;              
+    text-align: left;        /* Snaps the text to the left when expanded */
+}
+
+.exp-card.active .exp-details h3 {
+    margin-top: 0;           /* Pushes the title up flush with the top of the image */
+    margin-bottom: 0.5rem;
+}
+
+.exp-card.active .exp-details p {
+    max-height: 800px;       
+    opacity: 1;        
+    transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out 0.3s;
+}
+
+.close-btn {
+    display: none;           /* Hidden by default */
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #333;
+    cursor: pointer;
+    z-index: 30;
+}
+
+.close-btn:hover {
+    color: red;
+}
+
+/* Only show the close button when the card is active */
+.exp-card.active .close-btn {
+    display: block;
+}
+
+#projects{
+    margin-top: 150px;
+}
+
+.project-img{
+    margin-top: 50px;
+    max-width: 800px;
+    max-height: 800px;
+}
+
+.projects-container{
+    display: flex;
+    justify-content: center;
+}
+
+.contacts-container{
+    color: black;
+    font-weight: 750;
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: clamp(0.9rem, 3.5vw, 30px);
+    gap: 1.5rem 4rem;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+}
+
+#footer{
+    margin-top: 80px;
+}
+
+.watermark{
+    color: black;
+    margin-bottom: 75px;
+    display: flex;
+    justify-content: center;
+}
+
+/* ── Loading Screen ─────────────────────────────────────────────────────── */
+ 
+#loader {
+    position: fixed;
+    inset: 0;
+    background-color: #000;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(0);
+    will-change: transform;
+    /* UPDATE THIS LINE: Slower, silkier transition */
+    transition: transform 1.4s cubic-bezier(0.65, 0, 0.05, 1);
+}
+
+#loader.wipe-up {
+    transform: translateY(-100%);
+}
+ 
+#loader-count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    font-weight: 300;
+    color: #fff;
+    letter-spacing: 0.2em;
+    min-width: 3ch;
+    text-align: right;
+    transition: opacity 0.25s ease;
+}
+ 
+body.loading {
+    overflow: hidden;
+}
+
+/* ── Smooth Parallax Reveal ─────────────────────────────────────────────── */
+
+/* 1. Push elements down slightly (but keep them visible behind the loader) */
+nav, section {
+    transform: translateY(80px); 
+    /* Match the timing and curve of the loader exactly */
+    transition: transform 1.4s cubic-bezier(0.65, 0, 0.05, 1);
+}
+
+/* 2. Slide them into their final resting place when the loader wipes up */
+body.loaded nav,
+body.loaded section {
+    transform: translateY(0);
+}
+
+/* 3. Add a tiny stagger so the top elements settle first */
+body.loaded nav {
+    transition-delay: 0.05s;
+}
+
+body.loaded #profile {
+    transition-delay: 0.1s;
+}
+
+body.loaded #about {
+    transition-delay: 0.15s;
+}
+
+/* ── Custom Scrollbar ──────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+    display: none;             /* Chrome, Safari, Brave and Opera */
+}
+
+html, body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+/* 2. The invisible track for the ball */
+#custom-scrollbar {
+    position: fixed;
+    top: 0;
+    right: 15px;           /* Distance from the right edge */
+    width: 20px;
+    height: 100vh;         /* Spans the full height of the viewport */
+    z-index: 9998;         /* High enough to sit above sections, below the loader */
+    pointer-events: none;  /* Allows clicks to pass through the empty track space */
+}
+
+/* 3. The Black Ball */
+#scroll-ball {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 18px;
+    background-color: #000000;
+    border-radius: 50%;
+    pointer-events: auto;  /* Makes the ball clickable */
+    cursor: grab;
+    transition: transform 0.15s ease; /* Smooth hover effect */
+}
+
+/* Give it a slight squish effect when grabbed */
+#scroll-ball:active {
+    cursor: grabbing;
+    transform: translateX(-50%) scale(1.2); 
+}
+
+/* ── Interactive Experience Canvas (Desktop) ───────────────────────────── */
+
+.exp-interactive-canvas {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    height: 720px; /* Gives enough room for the 3 stacked images */
+    margin-top: 3rem;
+}
+
+/* The Big Background Numbers */
+.exp-number {
+    position: absolute;
+    right: 150px;             /* Aligns them on the right side */
+    font-size: 7rem;
+    font-weight: 700;
+    color: #000;
+    line-height: 200px;       /* Matches the height of the thumbnail */
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Position each number to match the thumbnails */
+.exp-number[data-index="1"] { top: 0; }
+.exp-number[data-index="2"] { top: 260px; }
+.exp-number[data-index="3"] { top: 520px; }
+
+/* When any card is active, fade out the numbers */
+.exp-interactive-canvas.has-active .exp-number {
+    opacity: 0;
+    transform: translateX(20px);
+}
+
+/* ── The Flying Cards ── */
+
+.exp-card-fly {
+    position: absolute;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    z-index: 1;
+    /* This transition makes the movement and growth incredibly smooth */
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Initial starting positions on the left */
+.exp-card-fly[data-index="1"] { top: 0; }
+.exp-card-fly[data-index="2"] { top: 260px; }
+.exp-card-fly[data-index="3"] { top: 520px; }
+
+.exp-img-fly {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* transition image height to make room for text later */
+    transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+}
+
+.exp-details-fly {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    color: black;
+}
+
+/* ── The ACTIVE / Expanded State ── */
+
+.exp-card-fly.active {
+    left: 350px;              /* Flies over to the right */
+    top: 60px !important;     /* Centers it vertically in the canvas */
+    width: 450px;             /* Expands width */
+    height: 600px;            /* Expands height */
+    background: white;        /* Creates the polaroid effect */
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    z-index: 10;
+    cursor: default;
+}
+
+.exp-card-fly.active .exp-img-fly {
+    height: 300px;            /* Shrink image inside the new large card */
+    margin-bottom: 20px;
+}
+
+.exp-card-fly.active .exp-details-fly {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition-delay: 0.3s;   /* Wait for the card to finish flying before showing text */
+}
+
+.exp-card-fly .close-btn {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background: white;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 20;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.exp-card-fly.active .close-btn {
+    display: block;
+}
+
+/* ── Click Cue for Experience Cards ── */
+
+.click-cue {
+    position: absolute;
+    top: 35%;
+    right: -60px; /* Positions it to the right of the image */
+    font-size: 2.5rem;
+    color: #000;
+    pointer-events: none; /* Prevents the symbol from interfering with the card click */
+    animation: pointLeft 1.5s infinite ease-in-out;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+
+/* Hide the cue smoothly when the user clicks the card */
+.exp-card-fly.active .click-cue {
+    opacity: 0;
+    visibility: hidden;
+}

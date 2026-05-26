@@ -62,8 +62,6 @@
             
             <div class="exp-number" data-index="1">01</div>
             <div class="exp-number" data-index="2">02</div>
-            <div class="exp-number" data-index="3">03</div>
-
             <div class="exp-card-fly" data-index="1" onclick="flyExperience(this)">
                 <button class="close-btn" onclick="closeExperience(event, this)">✖</button>
                 <img src="assets/exp1.jpeg" alt="exp1" class="exp-img-fly">
@@ -84,24 +82,28 @@
                 </div>
             </div>
 
-            <div class="exp-card-fly" data-index="3" onclick="flyExperience(this)">
-                <button class="close-btn" onclick="closeExperience(event, this)">✖</button>
-                <img src="assets/placeholder.jpg" alt="exp3" class="exp-img-fly">
-                <span class="click-cue">⟵</span>
-                <div class="exp-details-fly">
-                    <h3>Experience 3</h3>
-                    <p>I [worked/participated/contributed] in [experience] for [time]. I successfully xxx. With this experience, i improved my skill in [skill]</p>
-                </div>
-            </div>
-
         </div>
     </section>
 
     <section id="projects">
         <h1 class="title">PROJECTS</h1>
-            <div class="projects-container">
-                <img src="assets/error.png" alt="404" class="project-img">
+        <div class="projects-grid-wrapper">
+
+            <div class="proj-card proj-card--large">
+                <div class="proj-thumb">
+                    <img src="assets/logo barangkita.png" alt="BarangKita" class="proj-thumb-img">
+                </div>
+                <div class="proj-info">
+                    <h3 class="proj-title">BarangKita</h3>
+                    <p class="proj-desc">Web Marketplace for buying secondhand items.</p>
+                    <div class="proj-tags">
+                        <span class="proj-tag">Java Springboot</span>
+                        <span class="proj-tag">HTML/CSS</span>
+                    </div>
+                </div>
             </div>
+
+        </div>
     </section>
 
     <section id="contact">
@@ -116,7 +118,7 @@
     <section id="footer">
         <p class="watermark">© Azaria Refaya Siddharta, 2026</p>
     </section>
-      <!-- Loading Screen -->
+
     <div id="loader">
         <span id="loader-count">0</span>
     </div>

@@ -1,5 +1,3 @@
-/* ─── Text Slice Distortion ───────────────────────────────────────────────── */
-
 (function () {
   const TEXT      = "AZARIA REFAYA SIDDHARTA";
   const SLICES    = 60;
@@ -14,41 +12,41 @@
   let W, H;
   let offscreen, offCtx;
 
-  /* smooth mouse state */
+  
   const mouse   = { x: -9999, y: -9999 };
   const prev    = { x: -9999, y: -9999 };
   let   speed   = 0;
   let   velDirX = 0;
   let   isOver  = false;
 
-  /* per-slice state */
+  
   let sliceOffsets = [];
   let targetOffsets = [];
 
-  /* ── Orbiting Ball State ─────────────────────────────────────────────── */
+  
   const ball = {
-    /* Helix progress: 0 = left edge, 1 = right edge, then wraps */
+    
     t:             0,
-    speed:         0.001,       // how fast it travels left→right (fraction per frame)
+    speed:         0.001,
 
-    /* Sine wave params for the vertical oscillation */
-    amplitude:     0,            // set in setup() — fraction of canvas height
-    frequency:     2.5,          // full sine cycles across one left→right pass
+    
+    amplitude:     0,
+    frequency:     2.5,
 
-    size:          10,           // base visual radius
+    size:          10,
     opacity:       1,
     active:        true,
     cooldownTimer: 0,
-    COOLDOWN_FRAMES: 300,        // 5 s at 60 fps
+    COOLDOWN_FRAMES: 300,
     fadeSpeed:     0.04,
 
-    /* Derived each frame */
+    
     x: 0,
     y: 0,
-    z: 0,                        // -1 (behind) … +1 (in front)
+    z: 0,
   };
 
-  /* ── setup ──────────────────────────────────────────────────────────────── */
+  
   function setup() {
     const dpr = window.devicePixelRatio || 1;
 
@@ -69,7 +67,7 @@
     sliceOffsets  = new Array(SLICES).fill(0);
     targetOffsets = new Array(SLICES).fill(0);
 
-    ball.amplitude = H * 0.28;   // vertical sweep
+    ball.amplitude = H * 0.28;
 
     buildOffscreen();
   }
@@ -92,11 +90,7 @@
     offCtx.fillText(TEXT, W / 2, (H / 2) / stretchFactor); 
   }
 
-  /* ── Ball position from helix ────────────────────────────────────────────
-     X travels left → right as t goes 0 → 1.
-     Y oscillates as sine  → vertical weave.
-     Z = cosine of same angle → +1 = in front of text, -1 = behind text.
-  ── */
+  
   function calcBallPos() {
     const angle = ball.t * Math.PI * 2 * ball.frequency;
 
@@ -105,15 +99,14 @@
     ball.z = Math.cos(angle);
   }
 
-  /* ── Draw the ball ───────────────────────────────────────────────────────── */
+  
   function drawBall() {
     if (ball.opacity <= 0) return;
 
     const { x, y, z } = ball;
 
-    // Depth scale: ball appears larger/smaller as it comes forward/recedes
     const depthScale = 0.55 + 0.45 * ((z + 1) / 2);
-    // Dim when behind text
+
     const depthAlpha = 0.28 + 0.72 * ((z + 1) / 2);
 
     const r = ball.size * depthScale;
@@ -121,7 +114,7 @@
     ctx.save();
     ctx.globalAlpha = ball.opacity * depthAlpha;
 
-    /* Glow */
+    
     const glowR = r * 3.2;
     const glow  = ctx.createRadialGradient(x, y, 0, x, y, glowR);
     glow.addColorStop(0,   `rgba(0,0,0,${0.18 * depthScale})`);
@@ -131,13 +124,13 @@
     ctx.arc(x, y, glowR, 0, Math.PI * 2);
     ctx.fill();
 
-    /* Solid core */
+    
     ctx.fillStyle = '#000000';
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fill();
 
-    /* Specular highlight — fades as ball goes behind */
+    
     if (z > -0.2) {
       const highlightAlpha = Math.max(0, (z + 0.2) / 1.2);
       ctx.globalAlpha = ball.opacity * depthAlpha * highlightAlpha;
@@ -150,7 +143,7 @@
     ctx.restore();
   }
 
-  /* ── Ball logic ──────────────────────────────────────────────────────────── */
+  
   function updateBall() {
     if (isOver) {
       ball.opacity       = Math.max(0, ball.opacity - ball.fadeSpeed);
@@ -161,7 +154,7 @@
 
     if (ball.active) {
       ball.t += ball.speed;
-      if (ball.t > 1) ball.t -= 1;          // wrap right → left seamlessly
+      if (ball.t > 1) ball.t -= 1;
       ball.opacity = Math.min(1, ball.opacity + ball.fadeSpeed);
     } else {
       ball.cooldownTimer++;
@@ -174,14 +167,14 @@
     calcBallPos();
   }
 
-  /* ── Helper: point driving distortion ───────────────────────────────────── */
+  
   function getEffectiveCursor() {
     if (isOver) return { x: mouse.x, y: mouse.y };
     if (ball.opacity > 0) return { x: ball.x, y: ball.y };
     return { x: -9999, y: -9999 };
   }
 
-  /* ── animation loop ─────────────────────────────────────────────────────── */
+  
   function update() {
     updateBall();
 
@@ -194,7 +187,7 @@
       speed += (rawSpeed - speed) * 0.2;
       if (dx !== 0) velDirX = dx >= 0 ? 1 : -1;
     } else if (ball.active && ball.opacity > 0.05) {
-      /* Simulate gentle rightward speed from the helix motion */
+      
       const helixDx = ball.speed * W;
       speed   += (helixDx * 8 - speed) * 0.06;
       velDirX  = 1;
@@ -220,7 +213,7 @@
     }
   }
 
-  /* ── draw ────────────────────────────────────────────────────────────────── */
+  
   function draw() {
     const dpr      = window.devicePixelRatio || 1;
     const sliceH   = H / SLICES;
@@ -230,7 +223,7 @@
 
     ctx.clearRect(0, 0, W, H);
 
-    /* ── Idle optimisation ─────────────────────────────────────────────────── */
+    
     const ballIsIdle = !ball.active && ball.opacity <= 0;
     let   isIdle     = !isOver && ballIsIdle;
     if (isIdle) {
@@ -244,7 +237,7 @@
       return;
     }
 
-    /* ── Shared slice-distortion renderer ─────────────────────────────────── */
+    
     function drawDistortedText() {
       const startCol    = Math.max(0, Math.floor((effective.x - radius) / colWidth));
       const maxCols     = Math.ceil(W / colWidth);
@@ -290,10 +283,7 @@
       }
     }
 
-    /* ── Layer order depends on ball's Z depth ─────────────────────────────
-       z >= 0  → ball is in front  → draw text first, ball on top
-       z <  0  → ball is behind    → draw ball first, text on top
-    ── */
+    
     if (isOver || ballIsIdle || ball.z >= 0) {
       drawDistortedText();
       if (!isOver) drawBall();
@@ -309,7 +299,7 @@
     requestAnimationFrame(loop);
   }
 
-  /* ── event listeners ────────────────────────────────────────────────────── */
+  
   canvas.addEventListener("mouseenter", () => { isOver = true; });
 
   canvas.addEventListener("mouseleave", () => {
@@ -339,7 +329,7 @@
 
   window.addEventListener("resize", setup);
 
-  /* ── init ───────────────────────────────────────────────────────────────── */
+  
   setup();
   loop();
 })();

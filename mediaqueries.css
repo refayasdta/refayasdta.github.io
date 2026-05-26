@@ -6,32 +6,32 @@
         display: flex;
     }
 
-    /* Push page content below the fixed hamburger nav */
+    
     body {
         padding-top: 14vh;
     }
     body.loading {
-        padding-top: 0; /* Don't offset during loader */
+        padding-top: 0; 
     }
 
-    /* Contain all sections to screen width */
+    
     section, nav {
         max-width: 100vw;
         overflow-x: hidden;
     }
 
-    /* Scale down desktop nav links font if somehow visible */
+    
     .nav-links {
         font-size: 1.5rem;
     }
 
-    /* Make contact section stack and wrap cleanly */
+    
     #contact {
         padding: 0 1rem;
         box-sizing: border-box;
     }
 
-    /* Projects image full width */
+    
     .projects-container {
         padding: 0 1rem;
         box-sizing: border-box;
@@ -45,7 +45,7 @@
         max-width: 450px;
     }
 
-    /* Override the desktop layout for active cards on mobile */
+    
     .exp-card.active {
         position: fixed;
         top: 50%;
@@ -89,16 +89,16 @@
         box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
-    /* ── Mobile Experience Section Overhaul ── */
+    
 
-    /* Give the canvas a natural auto height instead of fixed 720px */
+    
     .exp-interactive-canvas {
         height: auto;
         max-width: 100%;
         padding-bottom: 1rem;
     }
 
-    /* Stack the numbers vertically along with the cards */
+    
     .exp-number {
         position: static;
         display: block;
@@ -109,7 +109,7 @@
         padding-left: 1rem;
     }
 
-    /* Reset absolute positions — cards stack naturally in DOM order */
+    
     .exp-card-fly {
         position: static !important;
         width: 100% !important;
@@ -124,7 +124,7 @@
         left: auto !important;
     }
 
-    /* Numbers sit above their card */
+    
     .exp-number[data-index="1"] { order: 0; }
     .exp-card-fly[data-index="1"] { order: 1; }
     .exp-number[data-index="2"] { order: 2; }
@@ -132,25 +132,25 @@
     .exp-number[data-index="3"] { order: 4; }
     .exp-card-fly[data-index="3"] { order: 5; }
 
-    /* Make the canvas a flex column so order works */
+    
     .exp-interactive-canvas {
         display: flex;
         flex-direction: column;
     }
 
-    /* Thumbnail image — full width, fixed height */
+    
     .exp-img-fly {
         width: 100%;
         height: 200px;
         object-fit: cover;
     }
 
-    /* Hide the arrow cue on mobile — not needed */
+    
     .click-cue {
         display: none;
     }
 
-    /* Details always visible on mobile — accordion style */
+    
     .exp-details-fly {
         opacity: 1;
         visibility: visible;
@@ -161,14 +161,14 @@
         transition: max-height 0.45s ease, padding 0.3s ease, opacity 0.3s ease;
     }
 
-    /* Expanded state — show details */
+    
     .exp-card-fly.active .exp-details-fly {
         max-height: 500px;
         padding: 1rem;
         transition-delay: 0s;
     }
 
-    /* Active card styling on mobile — no flying, just expand in place */
+    
     .exp-card-fly.active {
         box-shadow: 0 8px 24px rgba(0,0,0,0.18) !important;
     }
@@ -178,7 +178,7 @@
         margin-bottom: 0;
     }
 
-    /* Show close button inside the card on mobile */
+    
     .exp-card-fly .close-btn {
         display: none;
         top: 12px;
@@ -196,7 +196,7 @@
         justify-content: center;
     }
 
-    /* Numbers don't need to fade on mobile */
+    
     .exp-interactive-canvas.has-active .exp-number {
         opacity: 1;
         transform: none;

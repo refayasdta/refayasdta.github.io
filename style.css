@@ -1513,7 +1513,7 @@ html::-webkit-scrollbar-thumb:hover {
         transform: scale(1.18);
     }
     100% {
-        transform: scale(180);
+        transform: scale(var(--loader-zoom-scale, 190));
     }
 }
 

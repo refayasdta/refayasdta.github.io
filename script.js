@@ -39,7 +39,10 @@
         const targetBounds = zoomTarget.getBoundingClientRect();
         const originX = targetBounds.left + (targetBounds.width / 2) - shellBounds.left;
         const originY = targetBounds.top + (targetBounds.height * 0.72) - shellBounds.top;
+        const portraitRatio = Math.max(1, window.innerHeight / window.innerWidth);
+        const zoomScale = Math.ceil(190 * Math.min(portraitRatio, 3));
         nameShell.style.setProperty('--loader-zoom-origin', `${originX}px ${originY}px`);
+        nameShell.style.setProperty('--loader-zoom-scale', zoomScale);
     }
 
     async function playLoader() {
@@ -60,6 +63,9 @@
         loader.classList.add('is-filled', 'is-zooming');
         await waitForMotion(nameShell, 'animationend', 'loader-name-zoom', 1800);
 
+        /* Let the fully enlarged yellow glyph paint before replacing it with
+           the identical solid-yellow loader background. */
+        await nextFrame();
         loader.classList.add('is-zoomed');
         document.body.classList.add('menu-entering', 'loaded');
         loader.classList.add('is-revealing');

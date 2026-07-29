@@ -2,128 +2,209 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>refaya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azaria Refaya</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mediaqueries.css">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
-    <div id="custom-scrollbar">
-        <div id="scroll-ball"></div>
-    </div>
-
-    <nav id="desktop-nav">
-        <div>
-            <ul class="nav-links">
-                <li><a href="#about">About Me</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contacts</a></li>
-            </ul>
-        </div>
-    </nav>
-    <nav id="hamburger-nav">
-        <div class="hamburger-menu">
-            <div class="hamburger-icon" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <div class="menu-links">
-                <li><a href="#about" onclick="toggleMenu()">About Me</a></li>
-                <li><a href="#experience" onclick="toggleMenu()">Experience</a></li>
-                <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
-                <li><a href="#contact" onclick="toggleMenu()">Contacts</a></li>
-            </div>
-        </div>
-    </nav>
-    <section id="profile">
-        <canvas id="text-slice-canvas"></canvas>
-    </section>
-    <section id="about">
-        <h1 class="title">ABOUT  ME</h1>
-        <div class="section__pic-container">
-            <img src="assets/about-pic.png" alt="profile picture" class="about-pic">
-        </div>
-        <div class="about-details-container">
-            <div class="about-containers">
-                <div class="details-containers">
-                    <p class="about-text">
-                        Hi! My name is Azaria Refaya Siddharta. I am a student @ Telkom University majoring in Informatics. I have full understanding on a few coding languages such as GoLang, C++, Java, and Python. I specialize in full-stack developing and data analysis.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section id="experience">
-        <h1 class="title">EXPERIENCE</h1>
-        
-        <div class="exp-interactive-canvas" id="exp-canvas">
-            
-            <div class="exp-number" data-index="1">01</div>
-            <div class="exp-number" data-index="2">02</div>
-            <div class="exp-card-fly" data-index="1" onclick="flyExperience(this)">
-                <button class="close-btn" onclick="closeExperience(event, this)">✖</button>
-                <img src="assets/exp1.jpeg" alt="exp1" class="exp-img-fly">
-                <span class="click-cue">⟵</span>
-                <div class="exp-details-fly">
-                    <h3>HIMA IF Telkom University</h3>
-                    <p>I worked in HIMA IF Telkom University from July 2025 - December 2026. I served as staff for the Cadre Development (Kaderisasi) Division. I successfully oversaw the LEADS Informatics program while also taking a key part in FORTRAN program. With this experience, i improved my skill in teamwork, project management, discipline, and working under pressure.</p>
-                </div>
-            </div>
-
-            <div class="exp-card-fly" data-index="2" onclick="flyExperience(this)">
-                <button class="close-btn" onclick="closeExperience(event, this)">✖</button>
-                <img src="assets/exp2.jpeg" alt="exp2" class="exp-img-fly">
-                <span class="click-cue">⟵</span>
-                <div class="exp-details-fly">
-                    <h3>VIVA LA FIA</h3>
-                    <p>I worked in VLF 2025 as part of the event division for 6 months. I successfully helped organize and plan the event. With this experience, i improved my skill in mediation, time management, and creative works</p>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="projects">
-        <h1 class="title">PROJECTS</h1>
-        <div class="projects-grid-wrapper">
-
-            <div class="proj-card proj-card--large">
-                <div class="proj-thumb">
-                    <img src="assets/logo barangkita.png" alt="BarangKita" class="proj-thumb-img">
-                </div>
-                <div class="proj-info">
-                    <h3 class="proj-title">BarangKita</h3>
-                    <p class="proj-desc">Web Marketplace for buying secondhand items.</p>
-                    <div class="proj-tags">
-                        <span class="proj-tag">Java Springboot</span>
-                        <span class="proj-tag">HTML/CSS</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="contact">
-        <h1 class="title">CONTACT ME</h1>
-            <div class="contacts-container">
-                <p class="contacts-details">081217996040</p>
-                <p class="contacts-details">refayasiddharta@gmail.com</p>
-                <p class="contacts-details">@refasdta</p>
-            </div>
-    </section>
-
-    <section id="footer">
-        <p class="watermark">© Azaria Refaya Siddharta, 2026</p>
-    </section>
 
     <div id="loader">
         <span id="loader-count">0</span>
     </div>
- 
+
+    <div class="app">
+
+        <!-- LEFT: INTERACTIVE 3D LAPTOP -->
+        <aside class="tv-panel">
+            <div class="laptop-stage" id="laptop-stage">
+                <model-viewer
+                    class="laptop-model"
+                    id="laptop-model"
+                    src="assets/classic_laptop_1k.gltf/classic_laptop_1k.gltf"
+                    alt="Interactive vintage beige laptop displaying Azaria Refaya's portfolio collage"
+                    camera-controls
+                    disable-pan
+                    touch-action="pan-y"
+                    interaction-prompt="none"
+                    camera-orbit="-18deg 68deg 86%"
+                    min-camera-orbit="-55deg 52deg 72%"
+                    max-camera-orbit="55deg 82deg 118%"
+                    field-of-view="28deg"
+                    min-field-of-view="24deg"
+                    max-field-of-view="36deg"
+                    shadow-intensity="1.2"
+                    shadow-softness="0.9"
+                    exposure="1.05">
+                </model-viewer>
+                <p class="laptop-model-status" id="laptop-model-status" aria-live="polite">LOADING 3D MODEL</p>
+                <div class="laptop-scroll-guide" role="status">
+                    <span class="scroll-mouse" aria-hidden="true"><span></span></span>
+                    <span class="scroll-guide-copy">
+                        <strong>Explore the laptop screen</strong>
+                        <small>Place your cursor on the display and scroll</small>
+                    </span>
+                </div>
+            </div>
+
+            <!-- The original HTML gallery remains the source for the laptop's live screen texture. -->
+            <div class="tv-screen tv-screen-source" id="tv-screen" aria-hidden="true">
+                <div class="tv-gallery" id="tv-gallery">
+                    <div class="tv-tile tile-a"><img src="assets/about-pic.png" alt=""></div>
+                    <div class="tv-tile tile-b"><img src="assets/exp1.jpeg" alt=""></div>
+                    <div class="tv-tile tile-c"><img src="assets/exp2.jpeg" alt=""></div>
+                    <div class="tv-tile tile-d"><img src="assets/placeholder.jpg" alt=""></div>
+                    <div class="tv-tile tile-e"><img src="assets/exp2.jpeg" alt=""></div>
+                    <div class="tv-tile tile-f"><img src="assets/about-pic.png" alt=""></div>
+                    <div class="tv-tile tile-g"><img src="assets/exp1.jpeg" alt=""></div>
+                    <div class="tv-tile tile-h"><img src="assets/placeholder.jpg" alt=""></div>
+                    <div class="tv-tile tile-i"><img src="assets/exp2.jpeg" alt=""></div>
+                    <div class="tv-tile tile-j"><img src="assets/exp1.jpeg" alt=""></div>
+                </div>
+
+                <div class="tv-gallery tv-gallery-alt" id="tv-gallery-alt" hidden>
+                    <div class="tv-tile"><img id="alt-img-1" src="assets/logo%20barangkita.png" alt=""></div>
+                    <div class="tv-tile"><img id="alt-img-2" src="assets/logo_barangkita_final.png" alt=""></div>
+                    <div class="tv-tile"><img id="alt-img-3" src="assets/placeholder.jpg" alt=""></div>
+                    <div class="tv-tile"><img id="alt-img-4" src="assets/placeholder.jpg" alt=""></div>
+                </div>
+
+                <div class="glitch-layer" aria-hidden="true"></div>
+                <div class="scanlines" aria-hidden="true"></div>
+            </div>
+        </aside>
+
+        <!-- RIGHT: INFO PANEL -->
+        <main class="info-panel">
+
+            <nav class="pill-nav">
+                <button class="pill" type="button" id="pill-info" data-view="info" aria-pressed="true">
+                    Info
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="7.5" r="0.9" fill="currentColor" stroke="none"/></svg>
+                </button>
+                <button class="pill" type="button" id="pill-contact" data-view="contact" aria-pressed="false">
+                    Contact
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+                </button>
+            </nav>
+
+            <div class="view-stack">
+
+                <!-- INFO VIEW -->
+                <div class="view" id="view-info">
+
+                    <section class="card card-profile">
+                        <div class="card-meta">
+                            <span class="clock" id="clock">00:00:00</span>
+                        </div>
+                        <div class="profile-row">
+                            <img class="profile-pic" src="assets/about-pic.png" alt="Azaria Refaya Siddharta">
+                        </div>
+                        <p class="bio">
+                            Hi ! My name is Azaria Refaya Siddharta. I am a 3rd year student @ Telkom University Bandung Studying Informatics. I have intrests in fullstack developing, Artificial Intellegence, and Data Analysis. Check ot my skills and experience below !
+                        </p>
+                    </section>
+
+                    <section class="card card-skills">
+                        <div class="card-toprow">
+                            <span class="clock clock-secondary" data-clock>00:00:00</span>
+                        </div>
+                        <h2 class="section-heading">SKILLS</h2>
+                        <div class="skills-row">
+                            <span>C++</span>
+                            <span>GOLANG</span>
+                            <span>JAVA</span>
+                            <span>PYTHON</span>
+                            <span>R</span>
+                            <span>SQL</span>
+                        </div>
+                    </section>
+
+                    <section class="card card-links">
+                        <button class="link-btn" type="button" data-detail="hima">HIMA IF</button>
+                        <button class="link-btn" type="button" data-detail="vlf">VLF</button>
+                        <button class="link-btn" type="button" data-detail="spaces">SPACES</button>
+                    </section>
+
+                    <section class="card card-project" id="open-project" data-detail="barangkita" tabindex="0" role="button" aria-label="Open BarangKita project details">
+                        <div class="project-thumb">
+                            <img src="assets/logo_barangkita_final.png" alt="BarangKita logo">
+                        </div>
+                        <div class="project-info">
+                            <h3>BarangKita</h3>
+                            <p>BarangKita is a web marketplace for buying and selling secondhand items</p>
+                        </div>
+                    </section>
+
+                    <div class="contact-bar">
+                        <span class="email">refayasiddharta@gmail.com
+                            <button class="copy-btn" id="copy-email" type="button" aria-label="Copy email">
+                                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="1.5"/><path d="M5 15V4.5A1.5 1.5 0 0 1 6.5 3H15"/></svg>
+                            </button>
+                        </span>
+                        <div class="socials">
+                            <a class="social-btn" href="https://instagram.com/refasdta" target="_blank" rel="noopener" aria-label="Instagram">
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
+                            </a>
+                            <a class="social-btn" href="tel:081217996040" aria-label="Phone">
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h4l2 5-2.5 1.5a12 12 0 0 0 6 6L15 14l5 2v4a2 2 0 0 1-2 2C9.5 22 2 14.5 2 6a2 2 0 0 1 2-2z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="view" id="view-contact" hidden>
+
+                    <section class="card card-contact-info">
+                        <h2 class="section-heading">CONTACT ME !</h2>
+                        <div class="contact-row">
+                            <span>+62 812-1799-6040</span>
+                            <span>@refasdta</span>
+                            <span>refayasiddharta@gmail.com</span>
+                        </div>
+                    </section>
+
+                    <div class="ar-mark">
+                        <canvas id="ar-name-canvas"></canvas>
+                    </div>
+
+                </div>
+
+                <div class="view" id="view-detail" hidden>
+
+                    <section class="card card-detail">
+                        <button class="detail-close" id="detail-close-btn" type="button" aria-label="Close details">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+                        </button>
+
+                        <div class="detail-thumb">
+                            <img id="detail-thumb-img" src="assets/logo_barangkita_final.png" alt="Barangkita Thumbnail">
+                        </div>
+
+                        <h2 class="detail-title" id="detail-title">BarangKita</h2>
+
+                        <p class="detail-desc" id="detail-desc">
+                            BarangKita is a web marketplace built for buying and selling secondhand items. It pairs a Java Springboot backend with a clean HTML/CSS front end, focused on making listings simple to browse, quick to post, and easy to trust — turning a pile of unused stuff into someone else's next find.
+                        </p>
+
+                        <div class="detail-tags" id="detail-tags">
+                            <span class="detail-tag">Java Springboot</span>
+                            <span class="detail-tag">HTML / CSS</span>
+                            <span class="detail-tag">Marketplace</span>
+                        </div>
+                    </section>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
     <script src="script.js"></script>
     <script src="textpressure.js"></script>
+    <script src="laptop-screen.js"></script>
 </body>
 </html>

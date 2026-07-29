@@ -1,73 +1,69 @@
-(function () {
-  const TEXT      = "AZARIA REFAYA SIDDHARTA";
-  const SLICES    = 60;
-  const COLOR     = "#000000";
+function createTextPressure(canvas, text, opts = {}) {
+  if (!canvas) return null;
 
-  let FONT_SIZE = 105;          
-  let FONT      = `700 ${FONT_SIZE}px 'IBM Plex Mono', monospace`;
+  const {
+    slices      = 40,
+    color       = "#000000",
+    stretch     = 1.18,
+    minFont     = 24,
+    maxFont     = 56,
+    widthDivisor = 10.5,
+    heightRatio  = 1.3,
+  } = opts;
 
-  const canvas = document.getElementById("text-slice-canvas");
-  const ctx    = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d");
 
   let W, H;
   let offscreen, offCtx;
+  let FONT_SIZE = minFont;
+  let FONT = `700 ${FONT_SIZE}px 'IBM Plex Mono', monospace`;
 
-  
   const mouse   = { x: -9999, y: -9999 };
   const prev    = { x: -9999, y: -9999 };
   let   speed   = 0;
   let   velDirX = 0;
   let   isOver  = false;
 
-  
-  let sliceOffsets = [];
+  let sliceOffsets  = [];
   let targetOffsets = [];
 
-  
   const ball = {
-    
     t:             0,
-    speed:         0.001,
-
-    
+    speed:         0.0016,
     amplitude:     0,
     frequency:     2.5,
-
-    size:          10,
+    size:          5,
     opacity:       1,
     active:        true,
     cooldownTimer: 0,
-    COOLDOWN_FRAMES: 300,
-    fadeSpeed:     0.04,
-
-    
-    x: 0,
-    y: 0,
-    z: 0,
+    COOLDOWN_FRAMES: 220,
+    fadeSpeed:     0.05,
+    x: 0, y: 0, z: 0,
   };
 
-  
   function setup() {
     const dpr = window.devicePixelRatio || 1;
 
-    W = canvas.parentElement.clientWidth || window.innerWidth;
-    
-    FONT_SIZE = Math.min(105, W / 14); 
+    W = canvas.getBoundingClientRect().width || canvas.parentElement.clientWidth || 300;
+    if (!W) return;
+
+    FONT_SIZE = Math.max(minFont, Math.min(maxFont, W / widthDivisor));
     FONT = `700 ${Math.floor(FONT_SIZE)}px 'IBM Plex Mono', monospace`;
 
-    H = Math.round(FONT_SIZE * 3.5);
+    H = Math.round(FONT_SIZE * heightRatio);
 
     canvas.style.width  = "100%";
     canvas.style.height = H + "px";
     canvas.style.display = "block";
     canvas.width  = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
 
-    sliceOffsets  = new Array(SLICES).fill(0);
-    targetOffsets = new Array(SLICES).fill(0);
+    sliceOffsets  = new Array(slices).fill(0);
+    targetOffsets = new Array(slices).fill(0);
 
-    ball.amplitude = H * 0.28;
+    ball.amplitude = H * 0.26;
 
     buildOffscreen();
   }
@@ -78,59 +74,55 @@
     offscreen.width  = Math.round(W * dpr);
     offscreen.height = Math.round(H * dpr);
     offCtx = offscreen.getContext("2d");
+    offCtx.setTransform(1, 0, 0, 1, 0, 0);
     offCtx.scale(dpr, dpr);
-
-    const stretchFactor = 2.5;
-    offCtx.scale(1, stretchFactor); 
+    offCtx.scale(1, stretch);
 
     offCtx.font          = FONT;
-    offCtx.fillStyle     = COLOR;
+    offCtx.fillStyle     = color;
     offCtx.textAlign     = "center";
     offCtx.textBaseline  = "middle";
-    offCtx.fillText(TEXT, W / 2, (H / 2) / stretchFactor); 
+
+    let fitted = text;
+    ctx.font = FONT;
+    while (ctx.measureText(fitted).width > W - 8 && fitted.length > 1) {
+      fitted = fitted.slice(0, -1);
+    }
+
+    offCtx.fillText(fitted, W / 2, (H / 2) / stretch);
   }
 
-  
   function calcBallPos() {
     const angle = ball.t * Math.PI * 2 * ball.frequency;
-
     ball.x = ball.t * W;
     ball.y = H / 2 + Math.sin(angle) * ball.amplitude;
     ball.z = Math.cos(angle);
   }
 
-  
   function drawBall() {
     if (ball.opacity <= 0) return;
-
     const { x, y, z } = ball;
-
     const depthScale = 0.55 + 0.45 * ((z + 1) / 2);
-
     const depthAlpha = 0.28 + 0.72 * ((z + 1) / 2);
-
     const r = ball.size * depthScale;
 
     ctx.save();
     ctx.globalAlpha = ball.opacity * depthAlpha;
 
-    
     const glowR = r * 3.2;
     const glow  = ctx.createRadialGradient(x, y, 0, x, y, glowR);
-    glow.addColorStop(0,   `rgba(0,0,0,${0.18 * depthScale})`);
-    glow.addColorStop(1,   'rgba(0,0,0,0)');
+    glow.addColorStop(0, `rgba(0,0,0,${0.18 * depthScale})`);
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = glow;
     ctx.beginPath();
     ctx.arc(x, y, glowR, 0, Math.PI * 2);
     ctx.fill();
 
-    
     ctx.fillStyle = '#000000';
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fill();
 
-    
     if (z > -0.2) {
       const highlightAlpha = Math.max(0, (z + 0.2) / 1.2);
       ctx.globalAlpha = ball.opacity * depthAlpha * highlightAlpha;
@@ -143,7 +135,6 @@
     ctx.restore();
   }
 
-  
   function updateBall() {
     if (isOver) {
       ball.opacity       = Math.max(0, ball.opacity - ball.fadeSpeed);
@@ -167,14 +158,12 @@
     calcBallPos();
   }
 
-  
   function getEffectiveCursor() {
     if (isOver) return { x: mouse.x, y: mouse.y };
     if (ball.opacity > 0) return { x: ball.x, y: ball.y };
     return { x: -9999, y: -9999 };
   }
 
-  
   function update() {
     updateBall();
 
@@ -187,7 +176,6 @@
       speed += (rawSpeed - speed) * 0.2;
       if (dx !== 0) velDirX = dx >= 0 ? 1 : -1;
     } else if (ball.active && ball.opacity > 0.05) {
-      
       const helixDx = ball.speed * W;
       speed   += (helixDx * 8 - speed) * 0.06;
       velDirX  = 1;
@@ -198,36 +186,35 @@
     prev.x = effective.x;
     prev.y = effective.y;
 
-    const maxShear = Math.min(speed * 6, 200);
+    const maxShear = Math.min(speed * 6, 90);
     const now      = Date.now();
 
-    for (let i = 0; i < SLICES; i++) {
-      const t    = i / (SLICES - 1);
+    for (let i = 0; i < slices; i++) {
+      const t    = i / (slices - 1);
       const wave = Math.sin(t * Math.PI * 3 + now * 0.004) * 0.6
                  + Math.sin(t * Math.PI * 1.2 + now * 0.002) * 0.4;
       targetOffsets[i] = velDirX * maxShear * wave;
     }
 
-    for (let i = 0; i < SLICES; i++) {
+    for (let i = 0; i < slices; i++) {
       sliceOffsets[i] += (targetOffsets[i] - sliceOffsets[i]) * 0.06;
     }
   }
 
-  
   function draw() {
+    if (!W || !H) return;
     const dpr      = window.devicePixelRatio || 1;
-    const sliceH   = H / SLICES;
+    const sliceH   = H / slices;
     const effective = getEffectiveCursor();
-    const radius   = 150;
-    const colWidth = 10;
+    const radius   = 90;
+    const colWidth = 6;
 
     ctx.clearRect(0, 0, W, H);
 
-    
     const ballIsIdle = !ball.active && ball.opacity <= 0;
     let   isIdle     = !isOver && ballIsIdle;
     if (isIdle) {
-      for (let i = 0; i < SLICES; i++) {
+      for (let i = 0; i < slices; i++) {
         if (Math.abs(sliceOffsets[i]) > 0.5) { isIdle = false; break; }
       }
     }
@@ -237,7 +224,6 @@
       return;
     }
 
-    
     function drawDistortedText() {
       const startCol    = Math.max(0, Math.floor((effective.x - radius) / colWidth));
       const maxCols     = Math.ceil(W / colWidth);
@@ -245,7 +231,7 @@
       const alignedStart = Math.min(W, startCol * colWidth);
       const alignedEnd   = Math.max(0, Math.min(endCol * colWidth, W));
 
-      for (let i = 0; i < SLICES; i++) {
+      for (let i = 0; i < slices; i++) {
         const sy     = i * sliceH;
         const offset = sliceOffsets[i];
 
@@ -283,7 +269,6 @@
       }
     }
 
-    
     if (isOver || ballIsIdle || ball.z >= 0) {
       drawDistortedText();
       if (!isOver) drawBall();
@@ -299,7 +284,6 @@
     requestAnimationFrame(loop);
   }
 
-  
   canvas.addEventListener("mouseenter", () => { isOver = true; });
 
   canvas.addEventListener("mouseleave", () => {
@@ -329,7 +313,20 @@
 
   window.addEventListener("resize", setup);
 
-  
   setup();
   loop();
+
+  return { refresh: setup };
+}
+
+(function () {
+  const arCanvas = document.getElementById("ar-name-canvas");
+  window.arNamePressure = createTextPressure(arCanvas, "AR", {
+    slices: 26,
+    stretch: 1.1,
+    minFont: 60,
+    maxFont: 150,
+    widthDivisor: 2.1,
+    heightRatio: 1.3,
+  });
 })();

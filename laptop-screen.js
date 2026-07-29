@@ -20,8 +20,20 @@
     let maxScroll = 0;
     let glitchUntil = 0;
     let renderQueued = false;
+    let touchScrolling = false;
+    let lastTouchY = 0;
 
     const activeGallery = () => altGallery.hidden ? mainGallery : altGallery;
+
+    function updateScroll(delta) {
+        const gallery = activeGallery();
+        maxScroll = Math.max(0, gallery.scrollHeight - gallery.clientHeight);
+        scrollTop = Math.max(0, Math.min(scrollTop + delta, maxScroll));
+        gallery.scrollTop = scrollTop;
+        stage.classList.add('has-scrolled');
+        triggerScrollGlitch();
+        queueRender();
+    }
 
     function queueRender() {
         if (renderQueued || !context) return;
@@ -159,23 +171,52 @@
         }, 190);
     }
 
-    function isPointerOnLaptopScreen(event) {
+    function isPointOnLaptopScreen(clientX, clientY) {
         if (!modelViewer.model || typeof modelViewer.materialFromPoint !== 'function') return false;
-        const material = modelViewer.materialFromPoint(event.clientX, event.clientY);
+        const material = modelViewer.materialFromPoint(clientX, clientY);
         return Boolean(material && material.name === SCREEN_MATERIAL);
     }
 
     modelViewer.addEventListener('wheel', (event) => {
-        if (!isPointerOnLaptopScreen(event)) return;
+        if (!isPointOnLaptopScreen(event.clientX, event.clientY)) return;
 
         event.preventDefault();
         event.stopImmediatePropagation();
-        stage.classList.add('has-scrolled');
-        scrollTop += event.deltaY * 0.72;
-        activeGallery().scrollTop = scrollTop;
-        triggerScrollGlitch();
-        queueRender();
+        updateScroll(event.deltaY * 0.72);
     }, { passive: false, capture: true });
+
+    modelViewer.addEventListener('touchstart', (event) => {
+        if (event.touches.length !== 1) return;
+
+        const touch = event.touches[0];
+        if (!isPointOnLaptopScreen(touch.clientX, touch.clientY)) return;
+
+        touchScrolling = true;
+        lastTouchY = touch.clientY;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+    }, { passive: false, capture: true });
+
+    modelViewer.addEventListener('touchmove', (event) => {
+        if (!touchScrolling || event.touches.length !== 1) return;
+
+        const touch = event.touches[0];
+        const delta = (lastTouchY - touch.clientY) * 1.35;
+        lastTouchY = touch.clientY;
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        updateScroll(delta);
+    }, { passive: false, capture: true });
+
+    function endTouchScroll(event) {
+        if (!touchScrolling) return;
+        touchScrolling = false;
+        event.stopImmediatePropagation();
+    }
+
+    modelViewer.addEventListener('touchend', endTouchScroll, { capture: true });
+    modelViewer.addEventListener('touchcancel', endTouchScroll, { capture: true });
 
     modelViewer.addEventListener('load', () => {
         const screenMaterial = modelViewer.model
@@ -201,6 +242,11 @@
 
         stage.classList.add('is-ready');
         if (status) status.textContent = '3D MODEL READY';
+
+        if (window.matchMedia('(pointer: coarse)').matches) {
+            const guide = stage.querySelector('.scroll-guide-copy small');
+            if (guide) guide.textContent = 'Swipe up or down directly on the display';
+        }
 
         document.querySelectorAll('.tv-gallery img').forEach((image) => {
             if (!image.complete) image.addEventListener('load', queueRender, { once: true });

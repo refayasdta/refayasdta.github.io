@@ -1,46 +1,76 @@
 /* ---------------- LOADER ---------------- */
 (function () {
-    const loader  = document.getElementById('loader');
-    const countEl = document.getElementById('loader-count');
+    const loader = document.getElementById('loader');
+    const fill = loader && loader.querySelector('.loader-name-fill');
+    const nameShell = loader && loader.querySelector('.loader-name-shell');
+    const zoomTarget = loader && loader.querySelector('.loader-name-fill .loader-zoom-target');
+    if (!loader || !fill || !nameShell || !zoomTarget) return;
 
     document.body.classList.add('loading');
 
-    let current  = 0;
-    const TOTAL_MS = 1800;
-    let startTime  = null;
-
-    function easeInQuad(t) { return t * t; }
-
-    function step(ts) {
-        if (!startTime) startTime = ts;
-        const elapsed  = ts - startTime;
-        const progress = Math.min(elapsed / TOTAL_MS, 1);
-        const val      = Math.floor(easeInQuad(progress) * 100);
-
-        if (val !== current) {
-            current = val;
-            countEl.textContent = current;
-        }
-
-        if (progress < 1) {
-            requestAnimationFrame(step);
-        } else {
-            countEl.textContent = '100';
-            setTimeout(() => {
-                countEl.style.opacity = '0';
-                setTimeout(() => {
-                    loader.classList.add('wipe-up');
-                    document.body.classList.add('loaded');
-                    loader.addEventListener('transitionend', () => {
-                        loader.remove();
-                        document.body.classList.remove('loading');
-                    }, { once: true });
-                }, 150);
-            }, 250);
-        }
+    function nextFrame() {
+        return new Promise((resolve) => {
+            requestAnimationFrame(() => requestAnimationFrame(resolve));
+        });
     }
 
-    requestAnimationFrame(step);
+    function waitForMotion(element, eventName, motionName, fallbackMs) {
+        return new Promise((resolve) => {
+            let finished = false;
+            const finish = () => {
+                if (finished) return;
+                finished = true;
+                element.removeEventListener(eventName, onEnd);
+                resolve();
+            };
+            const onEnd = (event) => {
+                if (event.target !== element) return;
+                if (motionName && event.animationName !== motionName) return;
+                finish();
+            };
+
+            element.addEventListener(eventName, onEnd);
+            setTimeout(finish, fallbackMs);
+        });
+    }
+
+    function setZoomOrigin() {
+        const shellBounds = nameShell.getBoundingClientRect();
+        const targetBounds = zoomTarget.getBoundingClientRect();
+        const originX = targetBounds.left + (targetBounds.width / 2) - shellBounds.left;
+        const originY = targetBounds.top + (targetBounds.height * 0.72) - shellBounds.top;
+        nameShell.style.setProperty('--loader-zoom-origin', `${originX}px ${originY}px`);
+    }
+
+    async function playLoader() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            loader.classList.add('is-filled', 'is-zoomed');
+            document.body.classList.add('menu-entering', 'loaded');
+            await nextFrame();
+            loader.remove();
+            document.body.classList.remove('loading', 'menu-entering');
+            return;
+        }
+
+        await nextFrame();
+        loader.classList.add('is-filling');
+        await waitForMotion(fill, 'animationend', 'loader-liquid-fill', 4000);
+
+        setZoomOrigin();
+        loader.classList.add('is-filled', 'is-zooming');
+        await waitForMotion(nameShell, 'animationend', 'loader-name-zoom', 1800);
+
+        loader.classList.add('is-zoomed');
+        document.body.classList.add('menu-entering', 'loaded');
+        loader.classList.add('is-revealing');
+        await waitForMotion(loader, 'transitionend', '', 1200);
+
+        loader.remove();
+        document.body.classList.remove('loading');
+        setTimeout(() => document.body.classList.remove('menu-entering'), 450);
+    }
+
+    playLoader();
 })();
 
 /* ---------------- TV PANEL DOT HOVER ---------------- */
@@ -308,4 +338,17 @@
             setTimeout(() => screen.classList.remove('glitching'), 180);
         }
     }, 4000);
+})();
+
+/* ---------------- INFO PANEL SCROLL HINT ---------------- */
+(function () {
+    const panel = document.querySelector('.info-panel');
+    const hint = document.querySelector('.info-scroll-hint');
+    if (!panel || !hint) return;
+
+    const dismissHint = () => hint.classList.add('is-dismissed');
+
+    panel.addEventListener('scroll', dismissHint, { passive: true, once: true });
+    panel.addEventListener('wheel', dismissHint, { passive: true, once: true });
+    panel.addEventListener('touchmove', dismissHint, { passive: true, once: true });
 })();

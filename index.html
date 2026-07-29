@@ -10,8 +10,12 @@
 </head>
 <body>
 
-    <div id="loader">
-        <span id="loader-count">0</span>
+    <div id="loader" role="status" aria-label="Loading Azaria Refaya Siddharta's portfolio">
+        <div class="loader-name-shell" aria-hidden="true">
+            <span class="loader-name loader-name-base">AZARIA REFA<span class="loader-zoom-target">Y</span>A SIDDHARTA</span>
+            <span class="loader-name loader-name-fill">AZARIA REFA<span class="loader-zoom-target">Y</span>A SIDDHARTA</span>
+            <span class="loader-name loader-name-wave">AZARIA REFA<span class="loader-zoom-target">Y</span>A SIDDHARTA</span>
+        </div>
     </div>
 
     <div class="app">
@@ -87,6 +91,10 @@
                 </button>
             </nav>
 
+            <div class="info-scroll-hint" role="note">
+                <span class="scroll-hint-arrow" aria-hidden="true">→ → → → →</span>
+            </div>
+
             <div class="view-stack">
 
                 <!-- INFO VIEW -->
@@ -104,36 +112,50 @@
                         </p>
                     </section>
 
-                    <section class="card card-skills">
-                        <div class="card-toprow">
-                            <span class="clock clock-secondary" data-clock>00:00:00</span>
-                        </div>
-                        <h2 class="section-heading">SKILLS</h2>
-                        <div class="skills-row">
-                            <span>C++</span>
-                            <span>GOLANG</span>
-                            <span>JAVA</span>
-                            <span>PYTHON</span>
-                            <span>R</span>
-                            <span>SQL</span>
-                        </div>
-                    </section>
+                    <div class="info-section">
+                        <h2 class="section-heading" id="skills-heading">SKILLS</h2>
+                        <section class="card card-skills" aria-labelledby="skills-heading">
+                            <div class="skills-row">
+                                <span>C++</span>
+                                <span>GOLANG</span>
+                                <span>JAVA</span>
+                                <span>PYTHON</span>
+                                <span>R</span>
+                                <span>SQL</span>
+                            </div>
+                        </section>
+                    </div>
 
-                    <section class="card card-links">
-                        <button class="link-btn" type="button" data-detail="hima">HIMA IF</button>
-                        <button class="link-btn" type="button" data-detail="vlf">VLF</button>
-                        <button class="link-btn" type="button" data-detail="spaces">SPACES</button>
-                    </section>
+                    <div class="info-section">
+                        <h2 class="section-heading" id="experience-heading">EXPERIENCE</h2>
+                        <section class="card card-experience" aria-labelledby="experience-heading"></section>
+                    </div>
 
-                    <section class="card card-project" id="open-project" data-detail="barangkita" tabindex="0" role="button" aria-label="Open BarangKita project details">
-                        <div class="project-thumb">
-                            <img src="assets/logo_barangkita_final.png" alt="BarangKita logo">
-                        </div>
-                        <div class="project-info">
-                            <h3>BarangKita</h3>
-                            <p>BarangKita is a web marketplace for buying and selling secondhand items</p>
-                        </div>
-                    </section>
+                    <div class="info-section">
+                        <h2 class="section-heading" id="organization-heading">ORGANIZATION</h2>
+                        <section class="card card-links" aria-labelledby="organization-heading">
+                            <div class="organization-links">
+                                <button class="link-btn" type="button" data-detail="hima">HIMA IF</button>
+                                <button class="link-btn" type="button" data-detail="vlf">VLF</button>
+                                <button class="link-btn" type="button" data-detail="spaces">SPACES</button>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="info-section">
+                        <h2 class="section-heading" id="projects-heading">PROJECTS</h2>
+                        <section class="card card-project" id="open-project" data-detail="barangkita" tabindex="0" role="button" aria-label="Open BarangKita project details">
+                            <div class="project-card-content">
+                                <div class="project-thumb">
+                                    <img src="assets/logo_barangkita_final.png" alt="BarangKita logo">
+                                </div>
+                                <div class="project-info">
+                                    <h3>BarangKita</h3>
+                                    <p>BarangKita is a web marketplace for buying and selling secondhand items</p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
 
                     <div class="contact-bar">
                         <span class="email">refayasiddharta@gmail.com
@@ -154,14 +176,16 @@
                 </div>
                 <div class="view" id="view-contact" hidden>
 
-                    <section class="card card-contact-info">
-                        <h2 class="section-heading">CONTACT ME !</h2>
-                        <div class="contact-row">
-                            <span>+62 812-1799-6040</span>
-                            <span>@refasdta</span>
-                            <span>refayasiddharta@gmail.com</span>
-                        </div>
-                    </section>
+                    <div class="info-section">
+                        <h2 class="section-heading" id="contact-heading">CONTACT ME !</h2>
+                        <section class="card card-contact-info" aria-labelledby="contact-heading">
+                            <div class="contact-row">
+                                <span>+62 812-1799-6040</span>
+                                <span>@refasdta</span>
+                                <span>refayasiddharta@gmail.com</span>
+                            </div>
+                        </section>
+                    </div>
 
                     <div class="ar-mark">
                         <canvas id="ar-name-canvas"></canvas>

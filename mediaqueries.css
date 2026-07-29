@@ -6,6 +6,8 @@
         overflow-y: auto;
         overscroll-behavior-y: auto;
         -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: var(--yellow) var(--ink);
     }
 
     body {
@@ -65,22 +67,30 @@
         max-width: none;
     }
 
-    #view-info {
-        padding-top: 0;
-    }
-
     .view-stack {
-        padding-top: 4rem;
+        padding-top: 4.25rem;
     }
 
     .pill-nav {
         position: absolute;
         top: clamp(1rem, 4vw, 2rem);
-        right: clamp(1.25rem, 6vw, 3rem);
+        right: max(clamp(1.25rem, 6vw, 3rem), env(safe-area-inset-right));
+        width: auto;
         z-index: 10;
         justify-content: flex-end;
-        padding: 0.4rem 0;
-        background: transparent;
+        padding: 0;
+    }
+
+    .info-scroll-hint {
+        position: absolute;
+        top: 6.25rem;
+        right: max(0.45rem, env(safe-area-inset-right));
+        max-height: 10rem;
+        transform: none;
+    }
+
+    .info-scroll-hint.is-dismissed {
+        transform: translateY(-5px);
     }
 
     .pill,
@@ -138,7 +148,7 @@
 
     .tv-gallery { grid-auto-rows: 72px; }
 
-    .card-links {
+    .organization-links {
         flex-wrap: wrap;
     }
 
@@ -146,7 +156,7 @@
         flex: 1 1 40%;
     }
 
-    .card-project {
+    .project-card-content {
         flex-direction: column;
         align-items: flex-start;
     }
@@ -203,7 +213,7 @@
         padding-inline: 20px;
     }
 
-    .card-links { gap: 0.5rem; }
+    .organization-links { gap: 0.5rem; }
 
     .link-btn { flex-basis: 100%; }
 

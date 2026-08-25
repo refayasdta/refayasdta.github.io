@@ -100,7 +100,8 @@
 
     .social-btn,
     .copy-btn,
-    .detail-close {
+    .detail-close,
+    .detail-link {
         min-width: 44px;
         min-height: 44px;
     }
@@ -260,7 +261,8 @@
     .pill:hover,
     .link-btn:hover,
     .social-btn:hover,
-    .detail-close:hover {
+    .detail-close:hover,
+    .detail-link:hover {
         transform: none;
     }
 }

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" role="img" aria-labelledby="title desc">
+  <title id="title">SPACES</title>
+  <desc id="desc">SPACES wordmark on a yellow background</desc>
+  <rect width="500" height="400" rx="28" fill="#f9c511"/>
+  <path d="M68 92h364v216H68z" fill="#fffdf8" stroke="#18160f" stroke-width="14"/>
+  <circle cx="112" cy="132" r="12" fill="#18160f"/>
+  <circle cx="388" cy="268" r="12" fill="#18160f"/>
+  <text x="250" y="221" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="64" font-weight="700" letter-spacing="4" fill="#18160f">SPACES</text>
+</svg>

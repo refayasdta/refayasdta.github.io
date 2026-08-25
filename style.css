@@ -1000,6 +1000,12 @@ html::-webkit-scrollbar-thumb:hover {
     min-height: 6.5rem;
 }
 
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
 .link-btn {
     flex: 1;
     min-width: 0;
@@ -1061,9 +1067,15 @@ html::-webkit-scrollbar-thumb:hover {
 }
 
 .project-thumb img {
+    width: 100%;
+    height: 100%;
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
+}
+
+.card-list .project-thumb img[src$=".jpeg"] {
+    object-fit: cover;
 }
 
 .project-info {
@@ -1264,6 +1276,35 @@ html::-webkit-scrollbar-thumb:hover {
     background: var(--ink);
     color: var(--yellow);
     transform: translateY(-2px);
+}
+
+.detail-link {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 1.2rem;
+    border: var(--border-w) solid var(--ink);
+    border-radius: 999px;
+    padding: 0.65rem 1rem;
+    background: var(--yellow);
+    color: var(--ink);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.detail-link:hover,
+.detail-link:focus-visible {
+    background: var(--ink);
+    color: var(--yellow);
+    outline: none;
+    transform: translateY(-2px);
+}
+
+.detail-link[hidden] {
+    display: none;
 }
 
 .detail-thumb {

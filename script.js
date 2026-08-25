@@ -200,15 +200,31 @@
     window.switchPanelView = switchTo;
 })();
 
-/* ---------------- DETAIL CONTENT (BarangKita / HIMA IF / VLF / SPACES) ---------------- */
+/* ---------------- DETAIL CONTENT (experience / projects / organizations) ---------------- */
 (function () {
     const detailData = {
+        ramada: {
+            title: 'IT Intern',
+            desc: 'An IT internship at Ramada by Wyndham Serpong, focused on gaining hands-on experience in a hospitality technology environment.',
+            tags: ['IT Internship', 'Hospitality', 'Ramada Serpong'],
+            thumb: 'assets/ramada-logo.webp',
+            images: ['assets/ramada-logo.webp', 'assets/placeholder.jpg', 'assets/placeholder.jpg', 'assets/placeholder.jpg'],
+        },
         barangkita: {
             title: 'BarangKita',
             desc: "BarangKita is a web marketplace built for buying and selling secondhand items. It pairs a Java Springboot backend with a clean HTML/CSS front end, focused on making listings simple to browse, quick to post, and easy to trust — turning a pile of unused stuff into someone else's next find.",
             tags: ['Java Springboot', 'HTML / CSS', 'Marketplace'],
             thumb: 'assets/logo%20barangkita.png',
             images: ['assets/logo%20barangkita.png', 'assets/logo_barangkita_final.png', 'assets/placeholder.jpg', 'assets/placeholder.jpg'],
+            url: 'https://barang-kita.onrender.com/login',
+        },
+        'prem-engine': {
+            title: 'Prem Engine',
+            desc: 'Prem Engine is a self-contained Premier League forecasting and match-simulation application that runs locally. It synchronizes fixtures and results, forecasts scores and outcomes with the Optimatch dynamic Poisson model, saves match simulations, and compares predictions with real results.',
+            tags: ['Next.js', 'FastAPI', 'PostgreSQL', 'Machine Learning'],
+            thumb: 'assets/prem-engine-icon.png',
+            images: ['assets/prem-engine-preview.png', 'assets/prem-engine-icon.png', 'assets/placeholder.jpg', 'assets/placeholder.jpg'],
+            url: 'https://github.com/refayasdta/Prem-Engine',
         },
         hima: {
             title: 'HIMA IF Telkom University',
@@ -241,6 +257,7 @@
     const titleEl   = document.getElementById('detail-title');
     const descEl    = document.getElementById('detail-desc');
     const tagsEl    = document.getElementById('detail-tags');
+    const linkEl    = document.getElementById('detail-link');
     const altImgs   = [1, 2, 3, 4].map((n) => document.getElementById(`alt-img-${n}`));
 
     function renderDetail(key) {
@@ -261,6 +278,15 @@
                 span.textContent = tag;
                 tagsEl.appendChild(span);
             });
+        }
+        if (linkEl) {
+            if (data.url) {
+                linkEl.href = data.url;
+                linkEl.hidden = false;
+            } else {
+                linkEl.removeAttribute('href');
+                linkEl.hidden = true;
+            }
         }
 
         altImgs.forEach((img, i) => {
